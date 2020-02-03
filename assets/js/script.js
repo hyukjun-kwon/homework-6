@@ -10,7 +10,7 @@ $(document).ready(function() {
     $("#country-select").append(option);
   });
 
-  
+
   let d = "12/26/1991";
   let temp = 76.3;
   let humidity = 42;
@@ -54,6 +54,18 @@ $(document).ready(function() {
   }
 
 
+  function addSearchResult(name, code) {
+    // Remove active attribute from the current city
+    $(".active").removeClass("active");
+
+
+    let button = $("<button>").addClass("list-group-item list-group-item-action active");
+    button.attr("data-city", name);
+    button.attr("data-country", code);
+    button.text(`${name}, ${code}`);
+
+    $("#city-list").append(button);
+  }
 
   function weatherCard(date, temp, humidity) {
     let card = $("<div>").addClass("card");
@@ -65,7 +77,7 @@ $(document).ready(function() {
     let cardBody = $("<div>").addClass("card-body");
 
     let cardIcon = $("<div>").addClass("card-title");
-    let faIcon = $("<i>").addClass("fas fa-cloud-showers-heavy fa-5x fa-fw");
+    let faIcon = $("<i>").addClass("fas fa-cloud-showers-heavy fa-3x");
     cardBody.append(cardIcon.append(faIcon));
     
     
