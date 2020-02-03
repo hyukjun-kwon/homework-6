@@ -29,8 +29,11 @@
           </div>
           <div class="row">
             <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12">
-              <div class="input-group mb-3">
+              <div id="search" class="input-group mb-3">
                 <input id="search-input" type="text" class="form-control" onsubmit="findCity()" placeholder="Enter City">
+                <select class="custom-select" id="country-select">
+                  <option selected>Country (Optional)</option>
+                </select>
                 <div class="input-group-append">
                   <input id="find-city" class="btn btn-outline-secondary" type="submit" value="Find City"></input>
                 </div>
@@ -44,44 +47,47 @@
       </div>
 
       <!---------------------- Main Body ---------------------->
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-sm-3 col-md-4">
+          <div class="col-sm-4 col-md-3">
             <h3>Search Results:</h3>
             <div id="city-list" class="list-group">
-              <button type="button" data-city="New York" class="list-group-item list-group-item-action active">
-                New York
+              <button type="button" data-city="New York" data-country="US" class="list-group-item list-group-item-action active">
+                New York, US
               </button>
-              <button type="button" data-city="Chicago" class="list-group-item list-group-item-action">
-                Chicago
+              <button type="button" data-city="Chicago" data-country="US" class="list-group-item list-group-item-action">
+                Chicago, US
               </button>
-              <button type="button" data-city="Los Angeles" class="list-group-item list-group-item-action">
-                Los Angeles
+              <button type="button" data-city="Los Angeles" data-country="US" class="list-group-item list-group-item-action">
+                Los Angeles, US
               </button>
-              <button type="button" data-city="Phoenix" class="list-group-item list-group-item-action">
-                Phoenix
+              <button type="button" data-city="Tokyo" data-country="JP" class="list-group-item list-group-item-action">
+                Tokyo, JP
               </button>
-              <button type="button" data-city="Portland" class="list-group-item list-group-item-action">
-                Portland
+              <button type="button" data-city="Seoul" data-country="KR" class="list-group-item list-group-item-action">
+                Seoul, KR
               </button>
             </div>
 
           </div>
-          <div class="col-sm-9 col-md-8 text-center">
+          <div class="col-sm-8 col-md-9 text-center">
             <div class="row">
-              <div id="test" class="col-2 mx-0">
+              <div id="test1" class="col-2 mx-0">
 
               </div>
-              <div id="" class="col-2">
+              <div id="test2" class="col-2 mx-0">
 
               </div>
-              <div id="" class="col-2">
+              <div id="test3" class="col-2 mx-0">
 
               </div>
-              <div id="" class="col-2">
+              <div id="test4" class="col-2 mx-0">
 
               </div>
-              <div id="" class="col-2">
+              <div id="test5" class="col-2 mx-0">
+
+              </div>
+              <div id="test6" class="col-2 mx-0">
 
               </div>
 
@@ -90,7 +96,7 @@
           </div>
         </div>
       </div>
-
+      <div id="board"></div>
 
 
     </main>
@@ -98,6 +104,7 @@
     <!-- scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="assets/js/country.js"></script>
     <script src="assets/js/script.js"></script>
   </body>
 </html>
