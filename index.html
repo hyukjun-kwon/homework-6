@@ -28,13 +28,16 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6 offset-sm-3">
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12">
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter City">
+                <input id="search-input" type="text" class="form-control" onsubmit="findCity()" placeholder="Enter City">
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button">Find City</button>
+                  <input id="find-city" class="btn btn-outline-secondary" type="submit" value="Find City"></input>
                 </div>
               </div>
+            </div>
+            <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12">
+              <p id="search-input-error" class="text-danger d-none">City not found.</p>
             </div>
           </div>
         </div>
@@ -43,10 +46,46 @@
       <!---------------------- Main Body ---------------------->
       <div class="container">
         <div class="row">
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-md-4">
+            <h3>Search Results:</h3>
+            <div id="city-list" class="list-group">
+              <button type="button" data-city="New York" class="list-group-item list-group-item-action active">
+                New York
+              </button>
+              <button type="button" data-city="Chicago" class="list-group-item list-group-item-action">
+                Chicago
+              </button>
+              <button type="button" data-city="Los Angeles" class="list-group-item list-group-item-action">
+                Los Angeles
+              </button>
+              <button type="button" data-city="Phoenix" class="list-group-item list-group-item-action">
+                Phoenix
+              </button>
+              <button type="button" data-city="Portland" class="list-group-item list-group-item-action">
+                Portland
+              </button>
+            </div>
 
           </div>
-          <div class="col-sm-8">
+          <div class="col-sm-9 col-md-8 text-center">
+            <div class="row">
+              <div id="test" class="col-2 mx-0">
+
+              </div>
+              <div id="" class="col-2">
+
+              </div>
+              <div id="" class="col-2">
+
+              </div>
+              <div id="" class="col-2">
+
+              </div>
+              <div id="" class="col-2">
+
+              </div>
+
+            </div>
 
           </div>
         </div>
