@@ -17,29 +17,36 @@ $(document).ready(function() {
 
   function makeQuery(searchInput) {
     if (searchInput != "") {
+      // if user selects country, concat to query string
       if ($("#country-select").val() != "Country (Optional)") {
         searchInput += `, ${$("#country-select").val()}`;
       }
 
+      // DAILY weather forecast query, COUNT=7 (today + 6 more days)
       let queryURL = `https://api.openweathermap.org/data/2.5/forecast/daily?q=${searchInput}&cnt=7&appid=${API_KEY}`;
 
       $.ajax({
         url: queryURL,
         method: "GET"
       }).then(
+        // If response is valid
         function(res) {
-          addToday(res);
-          addSixDay(res);
-          addSearchResult(res);
-
+          // res.cod = 200 means search is valid
           if (res.cod === 200) {
+            addToday(res);
+            addSixDay(res);
+            addSearchResult(res);
+
             $("#search").removeClass("border border-danger");
             $("#search-input-error").addClass("d-none");
           }
         },
+        // If search fails (City does not exist)
         function(res) {
+          // Create red border and show error message
           $("#search").addClass("border border-danger");
           $("#search-input-error").removeClass("d-none");
+          // Clear the search bar, and reset the country selection
           $("#search-input").val("");
           $("#country-select").val("Country (Optional)");
         }
@@ -50,28 +57,33 @@ $(document).ready(function() {
   /*********************************************************** Display Forecasts ***********************************************************/
 
   function addToday(res) {
+    // Empty the today's weather section
     $("#today-forecast").empty();
 
-    // Add Today's weather
+    // Create Today's weather components
     let todayTitle = $("<h4>");
     todayTitle.text(
       `${res.city.name}, ${res.city.country} (${moment(
         res.list[0].dt * 1000
       ).format("MM/DD/YYYY")})`
     );
-    $("#today-forecast").append(todayTitle);
 
     let todayTemp = $("<p>").addClass("lead");
     todayTemp.text(`Temperature: ${toF(res.list[0].temp.day)}°F`);
-    $("#today-forecast").append(todayTemp);
 
     let todayHumidity = $("<p>").addClass("lead");
     todayHumidity.text(`Humidity: ${res.list[0].humidity}%`);
-    $("#today-forecast").append(todayHumidity);
 
     let todayWind = $("<p>").addClass("lead");
     todayWind.text(`Wind Speed: ${res.list[0].speed} MPH`);
-    $("#today-forecast").append(todayWind);
+
+    // Append
+    $("#today-forecast").append(
+      todayTitle,
+      todayTemp,
+      todayHumidity,
+      todayWind
+    );
   }
 
   function addSixDay(res) {
@@ -83,7 +95,6 @@ $(document).ready(function() {
       let t = toF(res.list[i].temp.day);
       let h = res.list[i].humidity;
       let ic = res.list[i].weather[0].icon;
-      console.log(ic);
 
       $(`#day${i}`).html(weatherCard(d, t, h, ic));
     }
@@ -94,20 +105,21 @@ $(document).ready(function() {
     let name = res.city.name;
     let code = res.city.country;
 
+    // Remove active attribute from the current "active" city
+    $(".active").removeClass("active");
+
+    // If city already exists on the list, "activate" the city and return
     for (let i = 0; i < $(".list-group-item").length; i++) {
       if (
         $(".list-group-item")[i].getAttribute("id") === name &&
         $(".list-group-item")[i].getAttribute("data-country") === code
       ) {
-        $(".active").removeClass("active");
         $(`.list-group-item[id="${name}"]`).addClass("active");
         return;
       }
     }
 
-    // Remove active attribute from the current city
-    $(".active").removeClass("active");
-
+    // If city does not exist, create & add to the list
     let button = $("<button>").addClass(
       "list-group-item list-group-item-action active mb-1"
     );
@@ -120,10 +132,13 @@ $(document).ready(function() {
 
   /********************************************************* Utility Functions *********************************************************/
 
+  // Temperature conversion from Kelvins to Fahrenheits 
   function toF(Kel) {
     return Number((Kel - 273.15) * 1.8 + 32).toFixed(1);
   }
 
+  // Create weather card for six-day forecast
+  // All parameters are strings
   function weatherCard(date, temp, humidity, weather_icon) {
     let card = $("<div>").addClass("card mb-2");
 
@@ -134,7 +149,7 @@ $(document).ready(function() {
 
     let cardIcon = $("<div>").addClass("card-title");
     let faIcon = $("<i>");
-    switch(weather_icon) {
+    switch (weather_icon) {
       // clear sky
       case "01d":
       case "01n":
