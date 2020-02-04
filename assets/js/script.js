@@ -31,7 +31,6 @@ $(document).ready(function() {
       }).then(
         // If response is valid
         function(res) {
-          console.log(res);
           addToday(res);
           addSixDay(res);
           addSearchResult(res);
@@ -82,6 +81,32 @@ $(document).ready(function() {
       todayHumidity,
       todayWind
     );
+
+    // UV Index
+    let uvURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${API_KEY}&lat=${res.city.coord.lat}&lon=${res.city.coord.lon}`;
+    $.ajax({
+      url: uvURL,
+      method: "GET"
+    }).then(function(uvRes) {
+      console.log(uvRes.value);
+
+      let uvi = uvRes.value;
+      let todayUV = $("<p>").addClass("lead");
+      todayUV.text('UV Index: ');
+      let uvBtn = $("<button>").text(uvi);
+      if(uvi <= 3) {
+        uvBtn.addClass("btn btn-success text-white");
+      }
+      else if(uvi > 2 && uvi <= 8) {
+        uvBtn.addClass("btn btn-warning text-white");
+      }
+      else {
+        uvBtn.addClass("btn btn-danger text-white");
+      }
+
+      $("#today-forecast").append(todayUV.append(uvBtn));
+
+    });
   }
 
   function addSixDay(res) {
