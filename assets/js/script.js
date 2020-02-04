@@ -11,18 +11,6 @@ $(document).ready(function() {
   });
 
 
-  let d = "12/26/1991";
-  let temp = 76.3;
-  let humidity = 42;
-
-  $("#test1").append(weatherCard(d,temp,humidity));
-  $("#test2").append(weatherCard(d,temp,humidity));
-  $("#test3").append(weatherCard(d,temp,humidity));
-  $("#test4").append(weatherCard(d,temp,humidity));
-  $("#test5").append(weatherCard(d,temp,humidity));
-  $("#test6").append(weatherCard(d,temp,humidity));
-
-
   /**************************************** Find City Function ****************************************/
 
   // searchInput = string
@@ -32,13 +20,16 @@ $(document).ready(function() {
         searchInput += `, ${$("#country-select").val()}`;
       }
 
-      let queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${API_KEY}`;
-
+      let todayQueryURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${API_KEY}`;
+      let sixdayQueryURL = `https://api.openweathermap.org/data/2.5/forecast/daily?q=${searchInput}&cnt=7&appid=${API_KEY}`;
       $.ajax({
-        url: queryURL,
+        url: sixdayQueryURL,
         method: "GET"
       }).then(function(res) {
         console.log(res);
+
+        addToday(res);
+        addSixDay(res);
         // cod 200 means that the search is a hit
         if(res.cod === 200) {
           $("#search").removeClass("border border-danger");
@@ -53,8 +44,46 @@ $(document).ready(function() {
     }
   }
 
+  function addToday(res) {
+    // Add Today's weather
+    let todayTitle = $("<h4>");
+    todayTitle.text(`${res.city.name}, ${res.city.country} (${moment(res.list[0].dt * 1000).format("MM/DD/YYYY h:MM A")})`)
+    $("#today-forecast").append(todayTitle);
+
+    let todayTemp = $("<p>").addClass("lead");
+    todayTemp.text(`Temperature: ${toF(res.list[0].temp.day)}°F`);
+    $("#today-forecast").append(todayTemp);
+
+    let todayHumidity = $("<p>").addClass("lead");
+    todayHumidity.text(`Humidity: ${res.list[0].humidity}%`);
+    $("#today-forecast").append(todayHumidity);
+
+    let todayWind = $("<p>").addClass("lead");
+    todayWind.text(`Wind Speed: ${res.list[0].speed} MPH`);
+    $("#today-forecast").append(todayWind);
+
+  }
+
+  function addSixDay(res) {
+    console.log(res);
+    // Add city name and country
+    $("#6day-forecast").text(`${res.city.name}, ${res.city.country} `);
+
+    for(let i = 1; i < 7; i++) {
+      let d = moment(res.list[i].dt * 1000).format("MM/DD/YYYY");
+      let t = toF(res.list[i].temp.day);
+      let h = res.list[i].humidity;
+      $(`#day${i}`).append(weatherCard(d,t,h))
+    }
+  }
+
+  function toF(Kel) {
+    return Number((Kel - 273.15) * 1.8 + 32).toFixed(1);
+  }
 
   function addSearchResult(name, code) {
+    // ************************ If the city is already on the list?
+
     // Remove active attribute from the current city
     $(".active").removeClass("active");
 
