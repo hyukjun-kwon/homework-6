@@ -82,7 +82,10 @@ $(document).ready(function() {
       let d = moment(res.list[i].dt * 1000).format("MM/DD/YYYY");
       let t = toF(res.list[i].temp.day);
       let h = res.list[i].humidity;
-      $(`#day${i}`).html(weatherCard(d, t, h));
+      let ic = res.list[i].weather[0].icon;
+      console.log(ic);
+
+      $(`#day${i}`).html(weatherCard(d, t, h, ic));
     }
   }
 
@@ -106,7 +109,7 @@ $(document).ready(function() {
     $(".active").removeClass("active");
 
     let button = $("<button>").addClass(
-      "list-group-item list-group-item-action active"
+      "list-group-item list-group-item-action active mb-1"
     );
     button.attr("id", name);
     button.attr("data-country", code);
@@ -121,8 +124,8 @@ $(document).ready(function() {
     return Number((Kel - 273.15) * 1.8 + 32).toFixed(1);
   }
 
-  function weatherCard(date, temp, humidity) {
-    let card = $("<div>").addClass("card");
+  function weatherCard(date, temp, humidity, weather_icon) {
+    let card = $("<div>").addClass("card mb-2");
 
     let cardHeader = $("<div>").addClass("card-header bg-primary text-white");
     card.append(cardHeader.text(date));
@@ -130,7 +133,43 @@ $(document).ready(function() {
     let cardBody = $("<div>").addClass("card-body");
 
     let cardIcon = $("<div>").addClass("card-title");
-    let faIcon = $("<i>").addClass("fas fa-cloud-showers-heavy fa-3x");
+    let faIcon = $("<i>");
+    switch(weather_icon) {
+      // clear sky
+      case "01d":
+      case "01n":
+        faIcon.addClass("fas fa-sun fa-3x");
+        break;
+      // few clouds
+      case "02d":
+      case "02n":
+      // scattered clouds
+      case "03d":
+      case "03n":
+      // broken clouds
+      case "04d":
+      case "04n":
+        faIcon.addClass("fas fa-cloud-sun fa-3x");
+        break;
+      case "09d":
+      case "09n":
+      case "10d":
+      case "10n":
+        faIcon.addClass("fas fa-cloud-showers-heavy fa-3x");
+        break;
+      case "11d":
+      case "11n":
+        faIcon.addClass("fas fa-thunderstorm fa-3x");
+        break;
+      case "13d":
+      case "13n":
+        faIcon.addClass("fas fa-snowflake fa-3x");
+        break;
+      case "50d":
+      case "50n":
+        faIcon.addClass("fas fa-fog fa-3x");
+        break;
+    }
     cardBody.append(cardIcon.append(faIcon));
 
     let cardTemp = $("<div>").addClass("card-text");
