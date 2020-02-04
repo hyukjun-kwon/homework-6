@@ -31,15 +31,13 @@ $(document).ready(function() {
       }).then(
         // If response is valid
         function(res) {
-          // res.cod = 200 means search is valid
-          if (res.cod === 200) {
-            addToday(res);
-            addSixDay(res);
-            addSearchResult(res);
+          console.log(res);
+          addToday(res);
+          addSixDay(res);
+          addSearchResult(res);
 
-            $("#search").removeClass("border border-danger");
-            $("#search-input-error").addClass("d-none");
-          }
+          $("#search").removeClass("border border-danger");
+          $("#search-input-error").addClass("d-none");
         },
         // If search fails (City does not exist)
         function(res) {
@@ -132,7 +130,7 @@ $(document).ready(function() {
 
   /********************************************************* Utility Functions *********************************************************/
 
-  // Temperature conversion from Kelvins to Fahrenheits 
+  // Temperature conversion from Kelvins to Fahrenheits
   function toF(Kel) {
     return Number((Kel - 273.15) * 1.8 + 32).toFixed(1);
   }
