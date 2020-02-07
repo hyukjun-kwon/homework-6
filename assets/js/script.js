@@ -83,7 +83,7 @@ $(document).ready(function() {
     );
 
     // UV Index
-    let uvURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${API_KEY}&lat=${res.city.coord.lat}&lon=${res.city.coord.lon}`;
+    let uvURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${API_KEY}&lat=${res.city.coord.lat}&lon=${res.city.coord.lon}`;
     $.ajax({
       url: uvURL,
       method: "GET"
